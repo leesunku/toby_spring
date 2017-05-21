@@ -1,0 +1,124 @@
+토비의 봄 TV 1회 - 재사용성과 다이나믹 디스패치, 더블 디스패치
+출처 : https://www.youtube.com/watch?v=s-tXAHub6vg
+
+스프링 = Dependency + Injection + Framework
+
+Dependency ?
+- 의존 관계(Dependency Relationship) > 무엇인가에 의존하고 있다(의존 관계가 있다)
+- Supplier 클래스의 변화가 Client 클래스에 영향을 주는 경우 (Client 클래스는 Supplier 
+
+클래스의 의존 관계가 있다.
+- Supplier 클래스에 변화를 주면 Client 클래스가 컴파일 시점에서 오류가 나거나, 컴파일이 
+
+되더라도 변화 전과 다른 동작을 할 수 있다.(의존 관계)
+
+객체지향 - 재사용성이 뛰어나다.
+- Client 클래스가 Supplier 클래스에 의존하고 있다면, Client 클래스는 재사용성이 좋지 않
+
+다(즉, 객체지향적이지 않다.)
+- Client 클래스는 컴포넌트/서비스가 될 수 없다.
+
+컴포넌트 - 컴포넌트란 이를 만든 개발자의 손이 미치지 않는 곳에서도, 아무 변경 없이, 필
+
+요에 따라 확장해서 사용될 수 있는 소프트웨어 덩이다 ( 마틴파울러 )
+- Client 클래스는 무엇인가에 의존하고 있기때문에, 재사용성이 떨어진다.
+
+오브젝트 패턴은 런타임시에 바뀔 수 있는,(상속 관계보다) 더 동적인 오브젝트 (의존) 관계
+
+를 다룬다. ( 갱 오브 포 - 디자인 패턴 )
+- 코드를 컴포넌트화 해서, 그대로 가져가서 수정없이 재사용 가능한 코드를 만들고 싶다.
+-> 그러려면, 재사용성을 고려한 설계가 필요.
+-> 그런 방법을 모아 놓은 것이 디자인 패턴 - Dependency Injection에 관심이 있다면 추천
+
+Dependency 정리
+- 컴파일 타임이 아니라 런타임시에 결정/구성되는 오브젝트 의존 관계
+- 클래스와 클래스간 의존관계 - 여기서 말하는 유연한, 동적인 Dependency Injection 이 아
+
+니다.
+- 클래스 대신 인터페이스를 사용하고,
+	> 클래스(구현) 의존 관계 제거
+	> 클래스에 대한 의존성은 생성 패턴처럼 3자에게 위임
+
+- 상속대신 오브젝트 함성 사용
+	> 재사용성을 확보하기 위한 방법의 한 가지 (상속의 대안)
+	> 인터페이스 사용이 전제(블랙 박스 재사용)
+	> 새롭고 복잡한 기능을 얻기 위해서 오브젝트를 조합/합성
+	> 런타임시에 다른 오브젝트에 대한 레퍼런스를 획득
+	> 각 클래스가 캡슐화되고 자신의 역할에 충실하게 도와줌
+
+
+Inversion of Control(IoC)
+
+Class Dependency
+
+class c -> class c
+
+Programming to Interface
+
+class c(Framework) -> interface i <- class c
+
+
+Dynamic Method Dispatch / Double Dispatch / Visitor Pattern / Visitor Proxy Pattern
+
+Dispatch는 static dispatch / dynamic dispatch 있다
+
+예제 Dispatch1
+- 런타임 시점이 되지 않아도 컴파일 시점에서 run 메소드가 실행 할지 알고있다. (static 
+
+dispatch)
+
+예제 Dispatch2
+- 같은 메소드, 같은 리턴타입이지만, 파라메터가 다르기 때문에, 정확이 어떤 메소드가 실행 
+
+될지 알고 동작한다.
+
+예제 Dispatch3
+- 컴파일 되는 시점에서 정확이 어떤 메소드가 선택될지 아는 것 (static dispatch)
+
+이것이 메소드 오버로딩이다.
+
+
+예제 Dispatch4
+
+예제 Dispatch5
+- 22번째 라인에서 svc.run(); 의 run 메소드는 어떤 클래스의 메소드인지 컴파일 시점에서 
+
+알 수 없다.
+- 런타임 시점에서 svc가 어떤 run메소드를 가르키는지 알게 된다.
+- 리시버 파라메터 // receiver parameter
+- 모든 클래스는 this가 정의 되어 있는데, this에 해당하는 오브젝트가 receiver parameter 
+
+가 들어 있음
+- new MyService1() 의 리시버 파라메터가 run()을 가리키고 있다.
+-
+
+예제 Dispatch6
+- 역시 런타임 시점에서 run메소드를 알 수 있다.
+
+Method Signature(name, parameter types) return type(x)
+
+Method Type(return type, method type parameter, method argument types, exception)
+=> Method Reference에서 사용 가능(43분쯤 뭔말인지 모름)
+
+Double Dispatch?
+- dynamic dispatch를 두번 하는 것
+
+
+예제 Dispatch9
+- 문제점 : 타입을 판별하는데 if문을 사용한 것
+
+예제 Dispatch10
+- 문제점 : 새로운 타입이 추가 될 때마다 if문을 추가해야함, 조건을 빼먹고 지나갈 경우
+
+방법 1 : 예제 Dispatch11
+- 메소드 오버로딩 이용, 그러나 컴파일 에러
+- 왜냐? 메소드 오버로딩은 static dispatch에서 일어나야 하기때문에
+- static dispatch는 컴파일 시점에서 메소드를 알아야 한다
+
+그래서 예제 Dispatch12
+- if 문 빠짐
+- 자유로운 새로운 타입 추가
+- 의존 코드에 영향을 주지 않음 (text 클래스와 picture 클래스)
+- 객체지향적 코드
+
+토비의 경험에 의하면 더블 디스패치는 10년에 한 번 사용 경험
